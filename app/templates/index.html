@@ -5,9 +5,55 @@
     <title>ようこそ</title>
 </head>
 <body>
-    ようこそ{{ username }}さん。まだ何も作成していません。
-    <form method="POST" action="/logout">
-        <input type="submit" value="ログアウト">
+    <h1>学習管理Web</h1>
+    ※まだ殆ど作成していません。(2025/9/21)<br>
+    {% if username %}
+        ※{{ username }}でログイン中です。
+        <form method="GET" action="{{ url_for('main.input_record') }}" style="display: inline-block; margin-right: 10px;">
+            <button type="submit">新規入力</button>
+        </form>
+        <form method="POST" action="{{ url_for('main.logout') }}" style="display: inline-block;">
+            <button type="submit">ログアウト</button>
+        </form>
+    {% endif %}
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>内容</th>
+                <th>入力者</th>
+                <th>開始日時</th>
+                <th>終了日時</th>
+                <th>備考</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for rec in records: %}
+                <tr>
+                    <td>{{ rec.confirm }}</td>
+                    <td>{{ rec.users.name }}</td>
+                    <td>{{ rec.study_date_start }}</td>
+                    <td>{{ rec.study_date_end }}</td>
+                    <td>{{ rec.remark }}</td>
+                    {% if username and user_id == rec.user_id %}
+                    <td><a href="{{ url_for('main.input_record', id=rec.id) }}">編集</a></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    入力者向けログイン<br>
+    <form method="POST" action="{{ url_for('main.login') }}">
+        {{ login.hidden_tag() }}
+        {{ login.username.label }} {{ login.username() }}
+        {{ login.password.label }} {{ login.password() }}<br>
+        {{ login.submit() }}<br>
     </form>
+    {% set messages = get_flashed_messages() %}
+    {% if messages %}
+        <p>{{ messages[-1] }}</p>
+    {% endif %}
+
 </body>
 </html>
