@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>ログイン</title>
+</head>
+<body>
+    <form method="POST" action="/">
+        {{ forms.hidden_tag() }}
+        {{ forms.username.label }} {{ forms.username() }}<br>
+        {{ forms.password.label }} {{ forms.password() }}<br>
+        {{ forms.submit() }}<br>
+    </form>
+    {% set messages = get_flashed_messages() %}
+    {% if messages %}
+        <p>{{ messages[-1] }}</p>
+    {% endif %}
+</body>
+</html>
