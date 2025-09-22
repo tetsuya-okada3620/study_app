@@ -1,10 +1,12 @@
 from flask import Flask
 from dotenv import load_dotenv
 from app.extensions import db, login_manager
+from flask_bootstrap5 import Bootstrap
 import os
 
 def create_app():
     app = Flask(__name__)
+    Bootstrap(app)
 
     # 開発用。実際に運用する場合は、環境変数設定に直接記載すること。
     load_dotenv("config.env")
