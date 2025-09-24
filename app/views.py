@@ -3,7 +3,7 @@ from app.models import Users, Records, Categories
 
 from flask import Blueprint, render_template, flash, redirect, url_for, request
 from flask_login import login_required, login_user, logout_user, current_user
-from app.forms import LoginForm, RecordForm, CategoryForm
+from app.forms import LoginForm, RecordForm, CategoryForm, SearchForm
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import check_password_hash
@@ -18,14 +18,33 @@ def load_user(user_id):
 @main.route("/", methods=["GET", "POST"])
 def index():
     login = LoginForm()
+    search = SearchForm()
 
-    # このままだと全て出力なので、検索で出力するように調整すること。
+    category_list = db.session.execute(select(Categories).order_by(Categories.category_id)).scalars().all()
+    search.category_name.choices = [("-999", "すべて表示")] + [(str(v.category_id), v.category_name) for v in category_list]
+    search.category_name.data = "-999"
+
+    records = None
+    # 検索フォーム処理
+    if search.validate_on_submit():
+        stmt = select(Records)
+        # カテゴリ
+        select_category = db.session.execute(select(Categories).where(Categories.category_id == search.category_name.data)).scalars().first()
+        if select_category:
+            stmt = stmt.where(Records.category_id == search.category_name.data)
+        # 時間
+        if search.study_date_start.data:
+            stmt = stmt.where(Records.study_date_start >= search.study_date_start.data)
+        if search.study_date_end.data:
+            stmt = stmt.where(Records.study_date_start <= search.study_date_end.data)
+
+        records = db.session.execute(stmt).scalars().all()
+
+    # print(search.errors)
     user_id = current_user.user_id if current_user.is_authenticated else None
     username = current_user.name if current_user.is_authenticated else None
-    records = db.session.execute(select(Records)).scalars().all()
 
-    return render_template("index.html", records=records, login=login, user_id=user_id, username=username)
-
+    return render_template("index.html", records=records, login=login, search=search, user_id=user_id, username=username)
 
 @main.route("/logout", methods=["POST"])
 @login_required
@@ -54,16 +73,12 @@ def login():
     
     return redirect(url_for("main.index"))
 
-
-@main.route("/input_record", methods=["GET", "POST"])
+@main.route("/insert_category", methods=["GET", "POST"])
 @login_required
-def input_record():
-    id = request.args.get("id")
-    r_forms = RecordForm()
+def insert_category():
     c_forms = CategoryForm()
-
-    # カテゴリ登録
     if c_forms.validate_on_submit():
+        print("OK")
         try:
             print(c_forms.category_name)
             db.session.add(Categories(category_name = c_forms.category_name.data))
@@ -72,6 +87,15 @@ def input_record():
         except IntegrityError:
             flash(f"「{c_forms.category_name.data}」のカテゴリは既に追加されています。")
             db.session.rollback()
+
+    return redirect(url_for("main.input_record"))
+
+@main.route("/input_record", methods=["GET", "POST"])
+@login_required
+def input_record():
+    id = request.args.get("id")
+    r_forms = RecordForm()
+    c_forms = CategoryForm()
 
     # カテゴリリストの表示
     category_list = db.session.execute(select(Categories)).scalars().all()
@@ -86,9 +110,6 @@ def input_record():
         r_forms.study_date_end.data = record.study_date_end
         r_forms.remark.data = record.remark
         
-    # print(r_forms.id.data)
-    # print(r_forms.errors)
-    # print(r_forms.validate_on_submit())
     if r_forms.validate_on_submit():
 
         if r_forms.id.data:  # 編集

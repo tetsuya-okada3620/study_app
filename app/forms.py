@@ -19,3 +19,9 @@ class RecordForm(FlaskForm):
 class CategoryForm(FlaskForm):
     category_name = StringField("カテゴリ名", validators=[DataRequired(), Length(max=30)])
     submit = SubmitField("送信")
+
+class SearchForm(FlaskForm):
+    category_name = SelectField("カテゴリ", validators=[DataRequired()])
+    study_date_start = DateTimeLocalField("開始日時")
+    study_date_end = DateTimeLocalField("終了日時")
+    submit = SubmitField("検索")
