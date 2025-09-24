@@ -1,9 +1,9 @@
 {% extends "base.html" %}
-<!-- **************************************************************** 
-    github: https://github.com/tetsuya-okada3620/study_app
-     **************************************************************** -->
 
 {% block content %}
+    <!-- **************************************************************** 
+        github: https://github.com/tetsuya-okada3620/study_app
+        **************************************************************** -->
     <div class="bg-success px-3 py-3 rounded" style="color: white;">
         <h1 class="mb-3">学習管理Web <span class="fs-6">サイト作成: 岡田 徹也</span></h1>
         
@@ -91,7 +91,7 @@
 
     <div class="border px-2 py-2">
         <div class="mb-3">
-            <h4>〇入力者向けログイン</h4>
+            <h4>〇入力者向けログイン <span class="fs-6">(入力フォーム閲覧用 ユーザー名:guest パスワード:guest)</span></h4>
             <form method="POST" action="{{ url_for('main.login') }}">
                 {{ login.hidden_tag() }}
                 <div class="row g-3 align-items-end" style="max-width: 700px;">
@@ -114,6 +114,7 @@
             <ul class="">
                 <li>時間の差分も抽出したい</li>
                 <li>検索結果をplotlyでグラフ描画する</li>
+                <li style="color: red">データの削除ボタンが無い(マスト)</li>
             </ul>
         </div>
     </div>

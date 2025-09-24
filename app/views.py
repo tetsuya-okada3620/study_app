@@ -29,7 +29,7 @@ def index():
         search.category_name.data = "-999"
         now = datetime.now()
         search.study_date_start.data = datetime(year=now.year, month=now.month, day=now.day) - timedelta(days=7)
-        search.study_date_end.data = datetime(year=now.year, month=now.month, day=now.day)
+        search.study_date_end.data = datetime(year=now.year, month=now.month, day=now.day) + timedelta(days=1)
 
     records = None
     # 検索フォーム処理
@@ -47,6 +47,7 @@ def index():
         if search.study_date_end.data:
             stmt = stmt.where(Records.study_date_start <= search.study_date_end.data)
 
+        stmt = stmt.order_by(Records.study_date_start)
         records = db.session.execute(stmt).scalars().all()
 
     # print(search.errors)

@@ -53,8 +53,11 @@
                     {{ r_forms.remark.label(class="form-label") }}
                     {{ r_forms.remark(class="form-control", style="white-space: pre-wrap; word-break: break-word;") }}
                 </div>
-
-                {{ r_forms.submit(class="btn btn-info", style="color: white;") }}
+                {% if username != "guest" %}
+                    {{ r_forms.submit(class="btn btn-info", style="color: white;") }}
+                {% else %}
+                    "***guestの為、送信ボタンはありません。このページは閲覧用です。***"
+                {% endif %}
             </form>
         </div>
     </div>
@@ -67,7 +70,11 @@
                 {{ c_forms.category_name(class="form-control") }}
             </div>
             {{ c_forms.hidden_tag() }}
-            {{ c_forms.submit(class="btn btn-info", style="color: white;") }}
+            {% if username != "guest" %}
+                {{ c_forms.submit(class="btn btn-info", style="color: white;") }}
+            {% else %}
+                "***guestの為、送信ボタンはありません。このページは閲覧用です。***"
+            {% endif %}
         </form>
     </div>
 
