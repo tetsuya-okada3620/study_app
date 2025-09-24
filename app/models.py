@@ -18,6 +18,7 @@ class Records(db.Model):
     study_date_end = db.Column(db.DateTime)
     write_date = db.Column(db.DateTime)
     remark = db.Column(db.Text)
+    category_id = db.Column(db.Integer, ForeignKey("categories.category_id"))
 
 class Users(db.Model, UserMixin):
     __tablename__ = "users"
@@ -29,3 +30,10 @@ class Users(db.Model, UserMixin):
         return str(self.user_id)
 
     records = db.relationship("Records", backref="users")
+
+class Categories(db.Model):
+    __tablename__ = "categories"
+    category_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    category_name = db.Column(db.String(30))
+
+    records = db.relationship("Records", backref="categories")

@@ -2,41 +2,73 @@
 {% block title %}新規入力{% endblock %}
 
 {% block content %}
-    <h2 class="mb-4">新規入力</h2>
-    <div class="row">
-        <div class="col-6">
-            <form method="POST" action="{{ url_for('main.input_record') }}">
-                {{ forms.hidden_tag() }}
+    <div class="mb-3">
+        <form method="POST" action="{{ url_for('main.index') }}"> 
+            <button type="submit" class="btn btn-info", style="color: white;">メイン画面に戻る</button>
+        </form>
+    </div>
 
-                id: {{ id if id else "新規登録" }}<br> 
-                入力/編集者: {{ username }}<br>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {{ messages[-1] }}
+        {% endif %}
+    {% endwith %}
+
+    <div class="border px-4 py-4 col-6 mb-3">
+        <h2 class="mb-4">新規入力</h2>
+        <div class="row">
+            <form method="POST" action="{{ url_for('main.input_record') }}">
+                {{ r_forms.hidden_tag() }}
+
+                <div class="mb-3">
+                    id: {{ id if id else "新規登録" }}
+                </div>
+                
+                <div class="mb-3">
+                    入力/編集者: {{ username }}
+                </div>
+
                 <div class="mb-3 row">
                     <div class="col-auto">
-                        {{ forms.study_date_start.label(class="form-label") }}
-                        {{ forms.study_date_start(class="form-control") }}
+                        {{ r_forms.study_date_start.label(class="form-label") }}
+                        {{ r_forms.study_date_start(class="form-control") }}
                     </div>
                     <div class="col-auto">
-                        {{ forms.study_date_end.label(class="form-label") }}
-                        {{ forms.study_date_end(class="form-control") }}
+                        {{ r_forms.study_date_end.label(class="form-label") }}
+                        {{ r_forms.study_date_end(class="form-control") }}
                     </div>
                 </div>
+
                 <div class="mb-3">
-                    {{ forms.confirm.label(class="form-label") }}
-                    {{ forms.confirm(class="form-control", style="white-space: pre-wrap; word-break: break-word;") }}
+                    {{ r_forms.category_name.label(class="form-label") }}
+                    {{ r_forms.category_name(class="form-control") }}
                 </div>
+
                 <div class="mb-3">
-                    {{ forms.remark.label(class="form-label") }}
-                    {{ forms.remark(class="form-control", style="white-space: pre-wrap; word-break: break-word;") }}
+                    {{ r_forms.confirm.label(class="form-label") }}
+                    {{ r_forms.confirm(class="form-control", style="white-space: pre-wrap; word-break: break-word;") }}
                 </div>
+
                 <div class="mb-3">
-                    {{ forms.submit(class="btn btn-info", style="color: white;") }}
+                    {{ r_forms.remark.label(class="form-label") }}
+                    {{ r_forms.remark(class="form-control", style="white-space: pre-wrap; word-break: break-word;") }}
                 </div>
+
+                {{ r_forms.submit(class="btn btn-info", style="color: white;") }}
             </form>
         </div>
     </div>
 
-    <form method="POST" action="{{ url_for('main.index') }}"> 
-        <button type="submit" class="btn btn-info", style="color: white;">メイン画面に戻る</button>
-    </form>
+    <div class="border px-4 py-4 col-6 mb-3">
+        <h2 class="mb-4">カテゴリ追加</h2>
+        <form method="POST" action="{{ url_for('main.input_record') }}">
+            <div class="mb-3">
+                {{ c_forms.category_name.label(class="form-label")}}
+                {{ c_forms.category_name(class="form-control") }}
+            </div>
+            {{ c_forms.hidden_tag() }}
+            {{ c_forms.submit(class="btn btn-info", style="color: white;") }}
+        </form>
+    </div>
 
 {% endblock %}
