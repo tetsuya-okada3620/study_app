@@ -2,6 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import ForeignKey
 from flask_login import UserMixin
 from app.extensions import db
+import datetime
 
 class Guest(UserMixin):
     def __init__(self):
@@ -37,3 +38,9 @@ class Categories(db.Model):
     category_name = db.Column(db.String(30))
 
     records = db.relationship("Records", backref="categories")
+
+class Foot(db.Model):
+    __tablename__ = "foot"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    hash = db.Column(db.Text)
+    foot_date = db.Column(db.Date, default=datetime.date.today)  # PG側で現在の日付をデフォルト値とする。

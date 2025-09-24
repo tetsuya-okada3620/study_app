@@ -3,7 +3,7 @@
 
 {% block content %}
     <div class="mb-3">
-        <form method="POST" action="{{ url_for('main.index') }}"> 
+        <form method="GET" action="{{ url_for('main.index') }}"> 
             <button type="submit" class="btn btn-info", style="color: white;">メイン画面に戻る</button>
         </form>
     </div>
@@ -31,7 +31,7 @@
                 <div class="mb-3 row">
                     <div class="col-auto">
                         {{ r_forms.study_date_start.label(class="form-label") }}
-                        {{ r_forms.study_date_start(class="form-control", step="300") }}
+                        {{ r_forms.study_date_start(class="form-control") }}
                     </div>
                     <div class="col-auto">
                         {{ r_forms.study_date_end.label(class="form-label") }}
