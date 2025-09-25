@@ -27,9 +27,9 @@ def index():
 
     if request.method == "GET":
         search.category_name.data = "-999"
-        now = datetime.now()
-        search.study_date_start.data = datetime(year=now.year, month=now.month, day=now.day) - timedelta(days=7)
-        search.study_date_end.data = datetime(year=now.year, month=now.month, day=now.day) + timedelta(days=1)
+        # now = datetime.now()
+        # search.study_date_start.data = datetime(year=now.year, month=now.month, day=now.day) - timedelta(days=7)
+        # search.study_date_end.data = datetime(year=now.year, month=now.month, day=now.day) + timedelta(days=1)
 
     records = None
     # 検索フォーム処理
