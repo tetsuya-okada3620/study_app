@@ -13,33 +13,36 @@ import hashlib
 
 main = Blueprint("main", __name__)
 
+@main.context_processor
+def login_forms():
+    user_id = current_user.user_id if current_user.is_authenticated else None
+    username = current_user.name if current_user.is_authenticated else None
+    return {"foot": FootForm(),
+            "login": LoginForm(),
+            "user_id": user_id,
+            "username": username,
+            }
+
 @login_manager.user_loader
 def load_user(user_id):
     return db.session.get(Users, int(user_id))
 
 @main.route("/", methods=["GET"])
 def index():
-    login = LoginForm()
-    foot = FootForm()
     search = SearchForm(formdata=request.args)
     
     category_list = db.session.execute(select(Categories).order_by(Categories.category_id)).scalars().all()
     search.category_name.choices = [("-999", "すべて表示")] + [(str(v.category_id), v.category_name) for v in category_list]
 
-    user_id = current_user.user_id if current_user.is_authenticated else None
-    username = current_user.name if current_user.is_authenticated else None
-
+    records = None
     if not request.args:
         # 初期化。とりあえず最新10件(ページネーションは今後の課題)
         search.category_name.data = "-999"
         stmt = select(Records).order_by(Records.study_date_start.desc()).limit(10)
         records = db.session.execute(stmt).scalars().all()
 
-        return render_template("index.html", records=records, login=login, search=search, foot=foot, user_id=user_id, username=username)
-    
-    records = None
-    # 検索フォーム処理
-    if search.validate():
+    elif search.validate():
+        # 検索
         stmt = select(Records)
         # カテゴリ
         select_category = db.session.execute(select(Categories).where(Categories.category_id == int(search.category_name.data))).scalar_one_or_none()
@@ -56,7 +59,7 @@ def index():
         records = db.session.execute(stmt).scalars().all()
 
     # print(search.errors)
-    return render_template("index.html", records=records, login=login, search=search, foot=foot, user_id=user_id, username=username)
+    return render_template("index.html", records=records, search=search)
 
 @main.route("/logout", methods=["POST"])
 @login_required
@@ -66,13 +69,23 @@ def logout():
     return redirect(url_for("main.index"))
 
 
-@main.route("/login", methods=["GET", "POST"])
+@main.route("/login", methods=["POST"])
 def login():
     forms = LoginForm()
 
     if forms.validate_on_submit():
-        username = forms.username.data
-        password = forms.password.data
+
+        if forms.submit.data:
+            username = forms.username.data
+            password = forms.password.data
+        elif forms.submit_guest.data:
+            username = "guest"
+            password = "guest"
+        else:
+            # 念の為。本来ならロギング処理。
+            flash("不明なエラーです。管理者へお問い合わせください。")
+            return redirect(url_for("main.index"))
+            
 
         stmt = select(Users).where(Users.name == username)
         search_account = db.session.execute(stmt).scalars().first()  # Users.nameはユニーク前提とします。
@@ -102,7 +115,7 @@ def insert_category():
 
     return redirect(url_for("main.input_record"))
 
-@main.route("/delete_record", methods=["GET", "POST"])
+@main.route("/delete_record", methods=["POST"])
 @login_required
 def delete_record():
     id = request.args.get("id")

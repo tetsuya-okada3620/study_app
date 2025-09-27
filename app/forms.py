@@ -3,9 +3,10 @@ from wtforms import HiddenField, StringField, PasswordField, SubmitField, TextAr
 from wtforms.validators import DataRequired, Length, Optional
 
 class LoginForm(FlaskForm):
-    username = StringField("ユーザー名", validators=[DataRequired()])
-    password = PasswordField("パスワード", validators=[DataRequired()])
+    username = StringField("ユーザー名", validators=[])
+    password = PasswordField("パスワード", validators=[])
     submit = SubmitField("ログイン")
+    submit_guest = SubmitField("ゲストでログイン(閲覧用)")
 
 class RecordForm(FlaskForm):
     id = HiddenField()
