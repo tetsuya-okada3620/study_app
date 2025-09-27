@@ -1,12 +1,13 @@
 from app.extensions import db, login_manager
 from app.models import Users, Records, Categories, Foot
 
-from flask import Blueprint, render_template, flash, redirect, url_for, request
+from flask import Blueprint, render_template, flash, redirect, url_for, request, session
 from flask_login import login_required, login_user, logout_user, current_user
 from app.forms import LoginForm, RecordForm, CategoryForm, SearchForm, FootForm
-from sqlalchemy import select
+from sqlalchemy import select, desc
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import check_password_hash
+from werkzeug.datastructures import MultiDict
 from datetime import datetime, timedelta
 import hashlib
 
@@ -16,25 +17,29 @@ main = Blueprint("main", __name__)
 def load_user(user_id):
     return db.session.get(Users, int(user_id))
 
-@main.route("/", methods=["GET", "POST"])
+@main.route("/", methods=["GET"])
 def index():
     login = LoginForm()
-    search = SearchForm()
     foot = FootForm()
-
+    search = SearchForm(formdata=request.args)
+    
     category_list = db.session.execute(select(Categories).order_by(Categories.category_id)).scalars().all()
     search.category_name.choices = [("-999", "すべて表示")] + [(str(v.category_id), v.category_name) for v in category_list]
 
-    if request.method == "GET":
-        search.category_name.data = "-999"
-        # now = datetime.now()
-        # search.study_date_start.data = datetime(year=now.year, month=now.month, day=now.day) - timedelta(days=7)
-        # search.study_date_end.data = datetime(year=now.year, month=now.month, day=now.day) + timedelta(days=1)
+    user_id = current_user.user_id if current_user.is_authenticated else None
+    username = current_user.name if current_user.is_authenticated else None
 
+    if not request.args:
+        # 初期化。とりあえず最新10件(ページネーションは今後の課題)
+        search.category_name.data = "-999"
+        stmt = select(Records).order_by(Records.study_date_start.desc()).limit(10)
+        records = db.session.execute(stmt).scalars().all()
+
+        return render_template("index.html", records=records, login=login, search=search, foot=foot, user_id=user_id, username=username)
+    
     records = None
     # 検索フォーム処理
-    print(search.category_name.data)
-    if search.validate_on_submit():
+    if search.validate():
         stmt = select(Records)
         # カテゴリ
         select_category = db.session.execute(select(Categories).where(Categories.category_id == int(search.category_name.data))).scalar_one_or_none()
@@ -47,13 +52,10 @@ def index():
         if search.study_date_end.data:
             stmt = stmt.where(Records.study_date_start <= search.study_date_end.data)
 
-        stmt = stmt.order_by(Records.study_date_start)
+        stmt = stmt.order_by(Records.study_date_start.desc())
         records = db.session.execute(stmt).scalars().all()
 
     # print(search.errors)
-    user_id = current_user.user_id if current_user.is_authenticated else None
-    username = current_user.name if current_user.is_authenticated else None
-
     return render_template("index.html", records=records, login=login, search=search, foot=foot, user_id=user_id, username=username)
 
 @main.route("/logout", methods=["POST"])
@@ -99,6 +101,17 @@ def insert_category():
             db.session.rollback()
 
     return redirect(url_for("main.input_record"))
+
+@main.route("/delete_record", methods=["GET", "POST"])
+@login_required
+def delete_record():
+    id = request.args.get("id")
+    delete_id = db.session.get(Records, id)
+    if delete_id:
+        db.session.delete(delete_id)
+        db.session.commit()
+
+    return redirect(url_for("main.index"))
 
 @main.route("/input_record", methods=["GET", "POST"])
 @login_required

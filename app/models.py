@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import ForeignKey
+from sqlalchemy.ext.hybrid import hybrid_property
 from flask_login import UserMixin
 from app.extensions import db
 import datetime
@@ -20,6 +21,10 @@ class Records(db.Model):
     write_date = db.Column(db.DateTime)
     remark = db.Column(db.Text)
     category_id = db.Column(db.Integer, ForeignKey("categories.category_id"))
+
+    @hybrid_property
+    def study_duration(self):
+        return int((self.study_date_end - self.study_date_start).total_seconds()) // 60
 
 class Users(db.Model, UserMixin):
     __tablename__ = "users"

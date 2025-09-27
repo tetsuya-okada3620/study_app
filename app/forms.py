@@ -21,6 +21,8 @@ class CategoryForm(FlaskForm):
     submit = SubmitField("送信")
 
 class SearchForm(FlaskForm):
+    class Meta:
+        csrf = False
     category_name = SelectField("カテゴリ", validators=[DataRequired()])
     study_date_start = DateTimeLocalField("開始日時", validators=[Optional()])
     study_date_end = DateTimeLocalField("終了日時", validators=[Optional()])
