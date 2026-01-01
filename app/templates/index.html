@@ -67,11 +67,9 @@
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="{{ url_for('main.delete_record', id=rec.id) if (username and user_id == rec.user_id) else '#' }}"
-                                    {% if not (username and user_id == rec.user_id) %}style="pointer-events: none; color: gray;"{% endif %}
-                                    onclick="return confirm('削除します')">
-                                    削除
-                                    </a>
+                                    <form class="link-form" method="POST" action="{{ url_for('main.delete_record', id=rec.id) if (username and user_id == rec.user_id) else '#' }}">
+                                        <button type="submit" onclick="return confirm('削除します')">削除</button>
+                                    </form>
                                 </td>
                             </tr>
                         {% endfor %}
