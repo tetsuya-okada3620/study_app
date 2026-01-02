@@ -62,7 +62,7 @@
                                 <td>{{ rec.study_date_end }}</td>
                                 <td>{{ rec.study_duration }}</td>
                                 <td class="td-text">{{ rec.confirm }}</td>
-                                <td class="td-text;">{{ rec.remark }}</td>
+                                <td class="td-text">{{ rec.remark }}</td>
                                 <td>{{ rec.users.name }}</td>
                                 <td>
                                     <a href="{{ url_for('main.input_record', id=rec.id) if (username and user_id == rec.user_id) else '#' }}"
