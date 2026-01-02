@@ -4,97 +4,80 @@
 <head>
     <meta charset="utf-8">
     <title>{% block title %}学習管理Web{% endblock %}</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .nav-link:hover {
-            background-color: #83a0ff;
-            color: #0d6efd;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
     {% block head %}{% endblock %}
 </head>
 
-<body class="bg-body-tertiary">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-2 d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="height: 100vh;">
-                <span class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none fs-4">メニュー</span>
-                <hr>
-                <ul class="nav nav-pills flex-column mb-auto">
-                    <li class="nav-item">
-                        <a href="{{ url_for('main.index') }}" class="nav-link link-body-emphasis">学習管理</a>
-                    </li>
-                    <li>
-                        <a href="{{ url_for('main.input_record') }}" class="nav-link link-body-emphasis">新規入力</a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link link-body-emphasis">自己紹介(未作成)</a>
-                    </li>
-                </ul>
+<body>
+    <div class="row-main">
+        <nav class="col-main1">
+            <span class="nav-title">メニュー</span>
+            <hr class="nav-hr">
+            <ul class="nav-list">
+                <li>
+                    <a href="{{ url_for('main.index') }}" class="nav-item">学習管理</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('main.input_record') }}" class="nav-item">新規入力</a>
+                </li>
+                <li>
+                    <a href="#" class="nav-item">自己紹介(未作成)</a>
+                </li>
+            </ul>
 
-                <div class="mt-auto">
-                    {% if not username %}
-                        <div class="fs-4 mb-2">入力者用ログイン</div>
-                        <form method="POST" action="{{ url_for('main.login') }}">
-                            {{ login.hidden_tag() }}
+            <div class="login-form">
+                {% if not username %}
+                    <div class="login-title">入力者用ログイン</div>
+                    <form method="POST" action="{{ url_for('main.login') }}">
+                        {{ login.hidden_tag() }}
 
-                            <div class="row mb-2">
-                                <div class="col-4">
-                                    {{ login.username.label(class="form-label mb-0") }}
-                                </div>
-                                <div class="col-8">
-                                    {{ login.username(class="form-control") }}
-                                </div>
+                        <div class="login-row">
+                            <div class="login-col1">
+                                {{ login.username.label }}
                             </div>
-                            <div class="row mb-2">
-                                <div class="col-4">
-                                    {{ login.password.label(class="form-label mb-0") }}
-                                </div>
-                                <div class="col-8">
-                                    {{ login.password(class="form-control") }}
-                                </div>
+                            <div class="login-col2">
+                                {{ login.username(class="parts-field") }}
                             </div>
-                            <div class="row mb-2">
-                                <div class="row col-4 ms-1">
-                                    {{ login.submit(class="btn btn-info", style="color: white;") }}
-                                </div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="row col-8 ms-1">
-                                    {{ login.submit_guest(class="btn btn-info", style="color: white;") }}
-                                </div>
-                            </div>
-                        </form>
-                    {% else %}
-                        ＊{{ username }}でログイン中です。
-                        <form method="POST" action="{{ url_for('main.logout') }}" class="fs-4 mb-2">
-                            <button type="submit" class="btn btn-info", style="color: white;">ログアウト</button>
-                        </form>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="col-10">
-                <header class="p-3 fs-4 text-white align-items-center" style="background-color: #36383b;">
-                    <div class="row d-flex">
-                        <div class="col-8">
-                            {% block header %}
-                            学習管理Web
-                            {% endblock %}
                         </div>
-                        <!-- <div class="col-4">
-                            <form class="d-flex fs-6 justify-content-end align-items-center" method="POST" action="{{ url_for('main.foot') }}">
-                                {{ foot.hidden_tag() }}
-                                {{ foot.submit(class="btn btn-primary", style="color: white;") }}
-                                <span class="fs-6 ms-1 justify-content-end align-items-center">押してもらえると励みになります。<br>個人情報等は登録されません。</span>
-                            </form>
-                        </div> -->
-                    </div>
-                    <div class="row">
-                        <span class="fs-6">サイト作成: 岡田 徹也 / github: https://github.com/tetsuya-okada3620/study_app</span>
-                    </div>
-                </header>
-                {% block content %}{% endblock %}
+                        <div class="login-row">
+                            <div class="login-col1">
+                                {{ login.password.label }}
+                            </div>
+                            <div class="login-col2">
+                                {{ login.password(class="parts-field") }}
+                            </div>
+                        </div>
+                        <div class="login-row">
+                            <div class="login-col1">
+                                {{ login.submit(class="parts-button",style="margin-top: 0;") }}
+                            </div>
+                        </div>
+                        <div class="login-row">
+                            <div class="login-col1">
+                                {{ login.submit_guest(class="parts-button" ,style="margin-top: 0;") }}
+                            </div>
+                        </div>
+                    </form>
+                {% else %}
+                    ＊{{ username }}でログイン中です。
+                    <form method="POST" class="login-message" action="{{ url_for('main.logout') }}">
+                        <button type="submit" class="btn btn-info", style="color: white;">ログアウト</button>
+                    </form>
+                {% endif %}
             </div>
+        </nav>
+        <div class="col-main2">
+            <header class="header-form">
+                <div class="header-title">
+                    {% block header %}
+                    学習管理Web
+                    {% endblock %}
+                </div>
+                <div class="header-name">サイト作成: 岡田 徹也 / github: https://github.com/tetsuya-okada3620/study_app</span>
+            </header>
+            {% block content %}{% endblock %}
         </div>
     </div>
 </body>

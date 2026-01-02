@@ -1,0 +1,120 @@
+body {
+    background-color: rgb(250 250 250);
+    padding: 0 0.75rem;
+    width: 100%;
+    color: black;
+}
+
+.header-form {
+    padding: 1rem;
+    font-size: 1.5rem;
+    color: white;
+    align-items: center;
+    background-color: #36383b;
+}
+
+.header-form > div {
+    margin: 4px 0px;
+}
+
+.header-title {
+    width: 66.66%;
+}
+
+.header-name {
+    font-size: 1rem;
+}
+
+.parts-field {
+    width: 100%;
+    border: 1px solid #dee2e6;
+    border-radius: 0.35rem;
+    padding: 0.35rem 0.75rem;
+}
+
+.parts-button {
+    display: inline-block;
+    padding: 0.35rem 0.75rem;
+    background-color: #14c1e4;
+    border: 1px solid #14c1e4;
+    border-radius: 0.35rem;
+    color: white;
+}
+
+.nav-hr {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+.row-main {
+    display: flex;
+    flex-wrap: wrap;
+    height: 100vh;
+}
+
+.row-nav {
+    display: flex;   
+}
+
+.col-main1 {
+    width: 15%;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+.col-main2 {
+    width: 75%;
+}
+
+.nav-title {
+    font-size: 1.5rem;
+}
+
+.nav-list {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    padding-left: 0;
+    list-style: none;
+}
+
+.nav-item {
+    border-radius: 0.35rem;
+    color: black;
+    padding: 0.5rem 1rem;
+    margin: 0.15rem 0;
+    display: block;
+    text-decoration: none;
+    transition: background-color 0.30s ease-in-out;
+}
+.nav-item:hover {
+    background-color: #83a0ff;
+}
+
+.login-form {
+    margin-top: auto;
+}
+
+.login-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.login-row {
+    display: flex;
+    margin: 0 -1rem 0.5rem -1rem;
+    width: 100%;
+}
+
+.login-col1 {
+    width: 33.33%;
+}
+
+.login-col2 {
+    width: 66.66%;
+}
+
+.login-message {
+    font-size: 1.5rem;
+}

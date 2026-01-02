@@ -1,86 +1,87 @@
 {% extends "base.html" %}
 {% block title %}新規入力{% endblock %}
 
-{% block header %}{% endblock %}
+{% block header %}
+<link rel="stylesheet" href="{{ url_for('static', filename='input.css') }}">
+{% endblock %}
 {% block content %}
-    <div style="max-height: 90vh; overflow-y: auto;">
-        <div class="mt-3 p-1">
+    <div class="input-main">
+        <div class="back">
             <form method="GET" action="{{ url_for('main.index') }}"> 
-                <button type="submit" class="btn btn-info", style="color: white;">メイン画面に戻る</button>
+                <button type="submit" class="parts-button">メイン画面に戻る</button>
             </form>
         </div>
-
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 {{ messages[-1] }}
             {% endif %}
         {% endwith %}
 
-        <div class="border px-4 py-4 col-6 mb-3">
-            <h2 class="mb-4">カテゴリ追加</h2>
-            <div class="row">
+        <div class="input-form">
+            <h2 class="input-item">新規登録</h2>
+            <div class="input-row">
                 <form method="POST" action="{{ url_for('main.input_record') }}">
                     {{ r_forms.hidden_tag() }}
 
-                    <div class="mb-3">
+                    <div class="input-item">
                         id: {{ id if id else "新規登録" }}
                     </div>
                     
-                    <div class="mb-3">
+                    <div class="input-item">
                         入力/編集者: {{ username }}
                     </div>
 
-                    <div class="mb-3 row">
-                        <div class="col-auto">
-                            {{ r_forms.study_date_start.label(class="form-label") }}
-                            {{ r_forms.study_date_start(class="form-control") }}
+                    <div class="input-item input-row">
+                        <div style="margin-left: 0.5rem;">
+                            {{ r_forms.study_date_start.label }}
+                            {{ r_forms.study_date_start(class="parts-field", style="display: block;") }}
                         </div>
-                        <div class="col-auto">
-                            {{ r_forms.study_date_end.label(class="form-label") }}
-                            {{ r_forms.study_date_end(class="form-control") }}
+                        <div style="margin-left: 0.5rem;">
+                            {{ r_forms.study_date_end.label }}
+                            {{ r_forms.study_date_end(class="parts-field", style="display: block;") }}
                         </div>
                     </div>
 
-                    <div class="mb-3">
-                        {{ r_forms.category_name.label(class="form-label") }}
-                        {{ r_forms.category_name(class="form-control") }}
+                    <div class="input-item">
+                        {{ r_forms.category_name.label }}
+                        {{ r_forms.category_name(class="parts-field") }}
                     </div>
 
-                    <div class="mb-3">
-                        {{ r_forms.confirm.label(class="form-label") }}
-                        {{ r_forms.confirm(class="form-control", style="white-space: pre-wrap; word-break: break-word;") }}
+                    <div class="input-item">
+                        {{ r_forms.confirm.label }}
+                        {{ r_forms.confirm(class="parts-field", style="white-space: pre-wrap; word-break: break-word;") }}
                     </div>
 
-                    <div class="mb-3">
-                        {{ r_forms.remark.label(class="form-label") }}
-                        {{ r_forms.remark(class="form-control", style="white-space: pre-wrap; word-break: break-word;") }}
+                    <div class="input-item">
+                        {{ r_forms.remark.label }}
+                        {{ r_forms.remark(class="parts-field", style="white-space: pre-wrap; word-break: break-word;") }}
                     </div>
                     {% if username != "guest" %}
-                        {{ r_forms.submit(class="btn btn-info", style="color: white;") }}
+                        {{ r_forms.submit(class="parts-button") }}
                     {% else %}
                         "***guestの為、送信ボタンはありません。このページは閲覧用です。***"
                     {% endif %}
                 </form>
             </div>
         </div>
-        <div class="border px-4 py-4 col-6">
-            <h2 class="mb-4">カテゴリ追加</h2>
+        <div class="input-form">
+            <h2 class="input-item">カテゴリ追加</h2>
             <form method="POST" action="{{ url_for('main.insert_category') }}">
-                <div class="mb-3">
-                    {{ c_forms.category_name.label(class="form-label")}}
-                    {{ c_forms.category_name(class="form-control") }}
+                <div class="input-item">
+                    {{ c_forms.category_name.label }}
+                    {{ c_forms.category_name(class="parts-field") }}
                 </div>
                 {{ c_forms.hidden_tag() }}
                 {% if username != "guest" %}
-                    {{ c_forms.submit(class="btn btn-info", style="color: white;") }}
+                    {{ c_forms.submit(class="parts-button") }}
                 {% else %}
                     "***guestの為、送信ボタンはありません。このページは閲覧用です。***"
                 {% endif %}
             </form>
         </div>
-        <div class="mb-3 p-1">
+        <div class="back">
             <form method="GET" action="{{ url_for('main.index') }}"> 
-                <button type="submit" class="btn btn-info", style="color: white;">メイン画面に戻る</button>
+                <button type="submit" class="parts-button">メイン画面に戻る</button>
             </form>
         </div>
     </div>

@@ -1,0 +1,93 @@
+.index-main {
+    max-height: 100vh;
+}
+
+.search-form {
+    background-color: RGB(25, 135, 84);
+    padding: 1rem;
+    color: white;
+}
+
+.search-wtf {
+    width: 100%;
+    padding-right: 0.75rem;
+    padding-left: 0.75rem;
+}
+
+.row-wtf {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.row-wtf > * {
+    padding: 0 0.25rem 0; 
+}
+
+.row-wtf > [class^="col-"] > label {
+    margin-bottom: 0px;
+}
+
+
+
+.col-category {
+    width: 25%;
+}
+.col-datetime {
+    width: 15%;
+}
+.col-button {
+    width: 10%;
+}
+
+.message {
+    background-color: red;
+    margin: 4px 8px;
+    padding: 0px 5px;
+    display: inline-block;
+    border-radius: 0.25rem;
+}
+
+.task-form {
+    margin: 0.25rem 0;
+    padding: 0.5rem;
+    border: 1px solid rgb(182, 182, 182);
+}
+
+.table-form {
+    max-height: 55vh;
+    overflow-y: auto;
+}
+
+table {
+    border: 1px;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    background-color: white;
+    width: auto;
+    vertical-align: top;
+    text-align: left;
+}
+
+tbody {
+    border-top: 2px solid black;
+    vertical-align: inherit;
+    overflow-y: auto;
+}
+
+table th,
+table td {
+    padding: 0.5rem;
+}
+
+tr {
+    border-bottom: 1px solid gray;
+}
+
+table > tbody > tr:hover {
+    background-color: rgba(0, 0, 0, 0.075);
+}
+
+.td-text {
+    white-space: pre-wrap;
+    word-break: break-all;
+}
