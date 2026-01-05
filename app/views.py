@@ -10,6 +10,8 @@ from werkzeug.security import check_password_hash
 from werkzeug.datastructures import MultiDict
 from datetime import datetime, timedelta
 import hashlib
+import pandas as pd
+import plotly.express as px
 
 main = Blueprint("main", __name__)
 
@@ -56,10 +58,32 @@ def index():
             stmt = stmt.where(Records.study_date_start <= search.study_date_end.data)
 
         stmt = stmt.order_by(Records.study_date_start.desc())
+
         records = db.session.execute(stmt).scalars().all()
 
+    # 時間(分)の合計値
+    if records:
+        study_duration_sum = sum([i.study_duration for i in records])
+        study_hours = study_duration_sum // 60
+        study_minutes = study_duration_sum % 60
+
+        df = pd.DataFrame({"日付": [v.study_date_start.date() for v in records],
+                           "時間(分)": [v.study_duration for v in records]}).sort_values(by="日付")
+        df = df.groupby("日付").sum().reset_index()
+
+        fig_html = px.bar(df, x="日付", y="時間(分)", text_auto="時間(分)").update_xaxes(
+                                                                type="category",
+                                                                tickformatstops=[
+                                                                    dict(dtickrange=[None, "M1"], value="%m/%d"),
+                                                                    dict(dtickrange=["M1", "Y1"], value="%Y"),
+                                                                ]
+                                                    ).to_html(full_html=False)
+    else:
+        study_hours = 0
+        study_minutes = 0
+
     # print(search.errors)
-    return render_template("index.html", records=records, search=search)
+    return render_template("index.html", records=records, search=search, study_hours=study_hours, study_minutes=study_minutes, fig_html=fig_html)
 
 @main.route("/logout", methods=["POST"])
 @login_required
@@ -176,22 +200,23 @@ def input_record():
 
     return render_template("input.html", r_forms=r_forms, c_forms=c_forms, id=id, username=current_user.name)
 
-@main.route("/foot", methods=["POST"])
-def foot():
-    f_forms = FootForm()
+# # 足跡機能は一旦保留。 
+# @main.route("/foot", methods=["POST"])
+# def foot():
+#     f_forms = FootForm()
 
-    # ipのDB格納は普通に考えて駄目なので、ハッシュ化して入れる。プロキシも考慮。
-    ip = request.headers.get("X-Forwarded-For", request.remote_addr)
-    hashed_ip = hashlib.sha256(ip.encode()).hexdigest()
+#     # ipのDB格納は普通に考えて駄目なので、ハッシュ化して入れる。プロキシも考慮。
+#     ip = request.headers.get("X-Forwarded-For", request.remote_addr)
+#     hashed_ip = hashlib.sha256(ip.encode()).hexdigest()
     
-    if f_forms.validate_on_submit():
-        try:
-            db.session.add(Foot(hash=hashed_ip))
-            db.session.commit()
-            flash("ありがとうございます。とても嬉しいです。")
-        except IntegrityError:
-            db.session.rollback()
-            flash("ありがとうございます。とても嬉しいです。が足跡は1日1回です。。")
+#     if f_forms.validate_on_submit():
+#         try:
+#             db.session.add(Foot(hash=hashed_ip))
+#             db.session.commit()
+#             flash("ありがとうございます。とても嬉しいです。")
+#         except IntegrityError:
+#             db.session.rollback()
+#             flash("ありがとうございます。とても嬉しいです。が足跡は1日1回です。。")
 
-    print(f_forms.errors)
-    return redirect(url_for("main.index"))
+#     print(f_forms.errors)
+#     return redirect(url_for("main.index"))

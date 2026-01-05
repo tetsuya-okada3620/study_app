@@ -84,12 +84,24 @@
             </table>
         </div>
 
+        <div class="table-duration">
+            {% if records %}
+                <table>
+                    <tr>
+                        <td>合計</td><td>{{ study_hours }}時間{{ study_minutes }}分</td>
+                    </tr>
+                </table>
+                <div class="graph-duration">
+                    {{ fig_html | safe }}
+                </div>
+            {% endif %}
+        </div>
+
         <div class="task-form">
             <h5>〇サイト作成の残課題(最終更新日:<time datetime="2026-01-02T21:00">2026/1/2</time>)</h5>
             <ul class="">
                 <li>readme未作成</li>
-                <li>検索結果をplotlyでグラフ描画する</li>
-                <li>検索状態の固定化</li>
+                <li>左のメニューのレスポンシブ化</li>
             </ul>
         </div>
     </div>
