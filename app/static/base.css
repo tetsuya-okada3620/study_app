@@ -88,8 +88,12 @@ body {
     text-decoration: none;
     transition: background-color 0.30s ease-in-out;
 }
-.nav-item:hover {
+.nav-item:hover:not(.nav-item-readme) {
     background-color: #83a0ff;
+}
+
+.nav-item-readme {
+    background-color: rgb(251, 229, 214);
 }
 
 .login-form {
