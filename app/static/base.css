@@ -1,8 +1,7 @@
 body {
     background-color: rgb(250 250 250);
-    padding: 0 0.75rem;
-    width: 100%;
     color: black;
+    margin: 0 auto;
 }
 
 .header-form {
@@ -11,6 +10,7 @@ body {
     color: white;
     align-items: center;
     background-color: #36383b;
+    min-height: 50px;
 }
 
 .header-form > div {
@@ -47,9 +47,10 @@ body {
 }
 
 .row-main {
+    width: 80%;
+    max-height: 100vh;
+    margin: auto;
     display: flex;
-    flex-wrap: wrap;
-    height: 100vh;
 }
 
 .row-nav {
@@ -64,7 +65,10 @@ body {
 }
 
 .col-main2 {
-    width: 75%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    
 }
 
 .nav-title {

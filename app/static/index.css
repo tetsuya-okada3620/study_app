@@ -1,11 +1,13 @@
-.index-main {
-    max-height: 100vh;
+.data-main {
+    flex: 1;
+    overflow-y: scroll;
 }
 
 .search-form {
     background-color: RGB(25, 135, 84);
     padding: 1rem;
     color: white;
+    min-height: 90px;
 }
 
 .search-wtf {
@@ -47,16 +49,27 @@
     border-radius: 0.25rem;
 }
 
+.graph-duration {
+    height: 400px;
+}
+.graph-duration > div {
+    height: 100%;
+}
+
 .task-form {
     margin: 0.25rem 0;
     padding: 0.5rem;
     border: 1px solid rgb(182, 182, 182);
 }
 
-.table-form {
-    max-height: 55vh;
+.table-scroll {
     overflow-y: auto;
 }
+
+/* .table-form {
+    max-height: 55vh;
+    overflow-y: auto;
+} */
 
 table {
     border: 1px;
