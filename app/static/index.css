@@ -136,6 +136,7 @@ table > tbody > tr:hover {
 .rec-remark {
     margin: 10px 0 0 20px;
     color: gray;
+    white-space: pre-wrap;
 }
 
 .td-text {

@@ -112,7 +112,7 @@
                             <div class="rec-category"><h2>{{ rec.categories.category_name }}</h2></div>
                             <div class="rec-confirm">{{ rec.confirm }}</div>
                             {% if rec.remark %}
-                                <div class="rec-remark">備考や感想: {{ rec.remark }}</div>
+                                <div class="rec-remark">備考や感想: <br>{{ rec.remark }}</div>
                             {% endif %}
                         </div>
                     {% endfor %}
