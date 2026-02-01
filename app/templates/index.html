@@ -5,95 +5,97 @@
 {% endblock %}
 
 {% block content %}
-    <div class="search-form">
-        <div class="search-wtf">
-            <form method="GET" action="{{ url_for('main.index') }}">
-                <div class="row-wtf">
-                    <div class="col-category">
-                        {{ search.category_name.label }}
-                        {{ search.category_name(class="parts-field") }}
+    <div class="index-main">
+        <div class="search-form">
+            <div class="search-wtf">
+                <form method="GET" action="{{ url_for('main.index') }}">
+                    <div class="row-wtf">
+                        <div class="col-category">
+                            {{ search.category_name.label }}
+                            {{ search.category_name(class="parts-field") }}
+                        </div>
+                        <div class="col-datetime">
+                            {{ search.study_date_start.label }}
+                            {{ search.study_date_start(class="parts-field") }}
+                        </div>
+                        <div class="col-datetime">
+                            {{ search.study_date_end.label }}
+                            {{ search.study_date_end(class="parts-field") }}
+                        </div>
+                        <div class="col-button" style="margin-top: 1.5rem;">
+                            {{ search.submit(class="parts-button") }}
+                        </div>
                     </div>
-                    <div class="col-datetime">
-                        {{ search.study_date_start.label }}
-                        {{ search.study_date_start(class="parts-field") }}
-                    </div>
-                    <div class="col-datetime">
-                        {{ search.study_date_end.label }}
-                        {{ search.study_date_end(class="parts-field") }}
-                    </div>
-                    <div class="col-button" style="margin-top: 1.5rem;">
-                        {{ search.submit(class="parts-button") }}
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
+            <div class="message">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}{{ messages[-1] }}{% endif %}
+                {% endwith %}
+            </div>
         </div>
-        <div class="message">
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}{{ messages[-1] }}{% endif %}
-            {% endwith %}
-        </div>
-    </div>
-    <div class="table-result">
-        <table>
-            <tr>
-                <td>下記合計</td><td>{{ study_hours }}時間{{ study_minutes }}分</td>
-            </tr>
-        </table>
-    </div>
-
-    <div class="data-main">
-        <div class="table-form">
+        <div class="table-result">
             <table>
-                <thead>
-                    <tr>
-                        <th>カテゴリ</th>
-                        <th>開始日時</th>
-                        <th>終了日時</th>
-                        <th>時間(分)</th>
-                        <th>内容</th>
-                        <th>備考・感想</th>
-                        <th>入力者</th>
-                        <th>編集</th>
-                        <th>削除</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% if records %}
-                        {% for rec in records: %}
-                            <tr>
-                                <td>{{ rec.categories.category_name }}</td>
-                                <td>{{ rec.study_date_start }}</td>
-                                <td>{{ rec.study_date_end }}</td>
-                                <td>{{ rec.study_duration }}</td>
-                                <td class="td-text">{{ rec.confirm }}</td>
-                                <td class="td-text">{{ rec.remark }}</td>
-                                <td>{{ rec.users.name }}</td>
-                                <td>
-                                    <a href="{{ url_for('main.input_record', id=rec.id) if (username and user_id == rec.user_id) else '#' }}"
-                                    {% if not (username and user_id == rec.user_id) %}style="pointer-events: none; color: gray;"{% endif %}>
-                                    編集
-                                    </a>
-                                </td>
-                                <td>
-                                    <!-- aタグはPOSTに対応できない為、buttonで代用 -->
-                                    {% set login = (username and user_id == rec.user_id) %}
-                                    <form class="link-button" method="POST" action="{{ url_for('main.delete_record', id=rec.id) if login else '#' }}">
-                                        <button type="submit" onclick="return confirm('削除します')" {% if not login %}disabled{% endif %}>削除</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    {% endif %}
-                </tbody>
+                <tr>
+                    <td>下記合計</td><td>{{ study_hours }}時間{{ study_minutes }}分</td>
+                </tr>
             </table>
         </div>
 
-        <div class="table-duration">
-            {% if records %}
-                <div class="graph-duration">
-                    {{ fig_html | safe }}
-                </div>
-            {% endif %}
+        <div class="data-main">
+            <div class="table-form">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>カテゴリ</th>
+                            <th>開始日時</th>
+                            <th>終了日時</th>
+                            <th>時間(分)</th>
+                            <th>内容</th>
+                            <th>備考・感想</th>
+                            <th>入力者</th>
+                            <th>編集</th>
+                            <th>削除</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if records %}
+                            {% for rec in records: %}
+                                <tr>
+                                    <td>{{ rec.categories.category_name }}</td>
+                                    <td>{{ rec.study_date_start }}</td>
+                                    <td>{{ rec.study_date_end }}</td>
+                                    <td>{{ rec.study_duration }}</td>
+                                    <td class="td-text">{{ rec.confirm }}</td>
+                                    <td class="td-text">{{ rec.remark }}</td>
+                                    <td>{{ rec.users.name }}</td>
+                                    <td>
+                                        <a href="{{ url_for('main.input_record', id=rec.id) if (username and user_id == rec.user_id) else '#' }}"
+                                        {% if not (username and user_id == rec.user_id) %}style="pointer-events: none; color: gray;"{% endif %}>
+                                        編集
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <!-- aタグはPOSTに対応できない為、buttonで代用 -->
+                                        {% set login = (username and user_id == rec.user_id) %}
+                                        <form class="link-button" method="POST" action="{{ url_for('main.delete_record', id=rec.id) if login else '#' }}">
+                                            <button type="submit" onclick="return confirm('削除します')" {% if not login %}disabled{% endif %}>削除</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-duration">
+                {% if records %}
+                    <div class="graph-duration">
+                        {{ fig_html | safe }}
+                    </div>
+                {% endif %}
+            </div>
         </div>
     </div>
 {% endblock %}

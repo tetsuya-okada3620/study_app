@@ -1,3 +1,8 @@
+.index-main {
+    flex: 1;
+    overflow-y: auto;
+}
+
 .data-main {
     flex: 1;
     overflow-y: scroll;
