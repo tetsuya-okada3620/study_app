@@ -71,7 +71,7 @@
     overflow-y: auto;
 } */
 
-table {
+[class^="table"] table {
     border: 1px;
     padding: 0.5rem;
     margin-bottom: 1rem;

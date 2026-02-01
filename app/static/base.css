@@ -11,6 +11,8 @@ body {
     align-items: center;
     background-color: #36383b;
     min-height: 50px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .header-form > div {
@@ -49,7 +51,7 @@ body {
 .row-main {
     width: 80%;
     max-height: 100vh;
-    margin: auto;
+    margin: 0 auto;
     display: flex;
 }
 
@@ -58,7 +60,7 @@ body {
 }
 
 .col-main1 {
-    width: 15%;
+    min-width: 250px;
     display: flex;
     flex-direction: column;
     padding: 1rem;
@@ -125,4 +127,30 @@ body {
 
 .login-message {
     font-size: 1.5rem;
+}
+
+.nav-button {
+    position: relative;
+    float: right;
+    padding: 6px 10px;
+    background-image: none;
+    border: 1px solid white;
+    border-radius: 4px;
+    background: #333;
+    color: #fff;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+@media (min-width: 768px) {
+    .nav-button {
+        display: none;
+    }
+    .col-main1 {
+        display: block;
+    }
+}
+
+.col-main1 {
+    display: none;
 }
