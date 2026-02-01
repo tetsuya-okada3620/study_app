@@ -33,6 +33,13 @@
             {% endwith %}
         </div>
     </div>
+    <div class="table-result">
+        <table>
+            <tr>
+                <td>下記合計</td><td>{{ study_hours }}時間{{ study_minutes }}分</td>
+            </tr>
+        </table>
+    </div>
 
     <div class="data-main">
         <div class="table-form">
@@ -83,11 +90,6 @@
 
         <div class="table-duration">
             {% if records %}
-                <table>
-                    <tr>
-                        <td>合計</td><td>{{ study_hours }}時間{{ study_minutes }}分</td>
-                    </tr>
-                </table>
                 <div class="graph-duration">
                     {{ fig_html | safe }}
                 </div>
