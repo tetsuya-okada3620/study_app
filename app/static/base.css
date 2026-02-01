@@ -24,7 +24,6 @@ body {
 
 .header-form {
     padding: 1rem;
-    font-size: 1.5rem;
     color: white;
     align-items: center;
     background-color: #36383b;
@@ -33,16 +32,14 @@ body {
     justify-content: space-between;
 }
 
-.header-form > div {
-    margin: 4px 0px;
+.header-form {
+    padding-top: 4px;
+    padding-bottom: 4px;
 }
 
-.header-title {
-    width: 66.66%;
-}
-
-.header-name {
-    font-size: 1rem;
+.header-title h1 {
+    margin: 0;
+    font-size: 1.6rem;
 }
 
 .parts-field {

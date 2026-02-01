@@ -104,6 +104,40 @@ table > tbody > tr:hover {
     background-color: rgba(0, 0, 0, 0.075);
 }
 
+.rec-row {
+    border-top: 1px dashed gray;
+    padding: 10px 0;
+    margin-left: 10px;
+}
+.rec-user {
+    margin-left: 5px;
+}
+.rec-category {
+    padding-left: 10px;
+    border-left: 5px solid green;
+}
+.rec-category h2 {
+    font-size: 1.4rem;
+}
+.rec-confirm {
+    white-space: pre-wrap;
+    margin-left: 20px;
+}
+.rec-delete {
+    display: inline;
+}
+.rec-delete button{
+    border: none;
+    text-decoration: underline;
+    background-color: inherit;
+    color: rgb(0, 102, 204);
+}
+
+.rec-remark {
+    margin: 10px 0 0 20px;
+    color: gray;
+}
+
 .td-text {
     white-space: pre-wrap;
     word-break: break-all;
