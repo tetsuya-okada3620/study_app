@@ -12,6 +12,7 @@
 </head>
 
 <body>
+    <div id="overlay" class="overlay"></div>
     <div class="row-main">
         <nav class="col-main1">
             <span class="nav-title">メニュー</span>
@@ -89,6 +90,23 @@
             {% block content %}{% endblock %}
         </div>
     </div>
+    <script>
+
+        const navButton = document.querySelector('.nav-button');
+        const navMenu = document.querySelector('.col-main1');
+        const overlay = document.getElementById('overlay');
+
+        navButton.addEventListener('click', () => {
+            navMenu.classList.toggle('open');
+            overlay.classList.toggle('show');
+        });
+
+        overlay.addEventListener('click', () => {
+                navMenu.classList.remove('open');
+                overlay.classList.remove('show');
+        });
+    
+    </script>
 </body>
 </html>
 

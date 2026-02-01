@@ -1,7 +1,25 @@
+:root {
+    --main-bg-color: rgb(250 250 250);
+}
+
 body {
-    background-color: rgb(250 250 250);
+    background-color: var(--main-bg-color);
     color: black;
     margin: 0 auto;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+.overlay.show {
+    display: block;
 }
 
 .header-form {
@@ -57,13 +75,6 @@ body {
 
 .row-nav {
     display: flex;   
-}
-
-.col-main1 {
-    min-width: 250px;
-    display: flex;
-    flex-direction: column;
-    padding: 1rem;
 }
 
 .col-main2 {
@@ -139,18 +150,47 @@ body {
     color: #fff;
     font-size: 0.8rem;
     cursor: pointer;
+    display: none;
 }
 
 .col-main1 {
     display: none;
 }
 
+.col-main1 {
+    min-width: 250px;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    background-color: var(--main-bg-color);
+}
 
-@media (min-width: 768px) {
+
+@media (max-width: 767px) {
     .nav-button {
-        display: none;
+        display: block;
     }
     .col-main1 {
-        display: block;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: -100%;
+        z-index: 1000;
+        transition: 0.3s;
+    }
+
+    .col-main1.open {
+        left: 0;
+    }
+}
+
+/* 万が一、ハンバーガーメニュー開く⇒ウィンドウを広げるとした場合 */
+@media (min-width: 768px) {
+    .overlay {
+        display: none !important;
+    }
+
+    .col-main1 {
+        position: static;
     }
 }
