@@ -34,12 +34,12 @@ def index():
     search = SearchForm(formdata=request.args)
     
     category_list = db.session.execute(select(Categories).order_by(Categories.category_id)).scalars().all()
-    search.category_name.choices = [("-999", "すべて表示")] + [(str(v.category_id), v.category_name) for v in category_list]
+    search.category_name.choices = [(str(v.category_id), v.category_name) for v in category_list]
 
     records = None
     if not request.args:
         # 初期化。とりあえず最新10件(ページネーションは今後の課題)
-        search.category_name.data = "-999"
+        search.category_name.data = "-998"
         stmt = select(Records).order_by(Records.study_date_start.desc()).limit(10)
         records = db.session.execute(stmt).scalars().all()
 
@@ -50,7 +50,13 @@ def index():
         select_category = db.session.execute(select(Categories).where(Categories.category_id == int(search.category_name.data))).scalar_one_or_none()
         print(select_category)
         if select_category:
-            stmt = stmt.where(Records.category_id == search.category_name.data)
+            if select_category.category_id == -999:  # すべて表示(明示的に)
+                pass
+            elif select_category.category_id == -998:  # 直近2週間
+                stmt = stmt.where(Records.study_date_start >= (datetime.now() - timedelta(days=14)))
+            else:  # 上記以外・DBに入っているカテゴリ
+                stmt = stmt.where(Records.category_id == search.category_name.data)
+
         # 時間
         if search.study_date_start.data:
             stmt = stmt.where(Records.study_date_start >= search.study_date_start.data)
@@ -71,7 +77,7 @@ def index():
                            "時間(分)": [v.study_duration for v in records]}).sort_values(by="日付")
         df = df.groupby("日付").sum().reset_index()
 
-        fig_html = px.bar(df, x="日付", y="時間(分)", text_auto="時間(分)").update_xaxes(
+        fig_html = px.bar(df, x="日付", y="時間(分)", text_auto="時間(分)", title="日毎推移").update_xaxes(
                                                                 type="category",
                                                                 tickformatstops=[
                                                                     dict(dtickrange=[None, "M1"], value="%m/%d"),
