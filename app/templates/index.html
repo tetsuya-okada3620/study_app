@@ -70,22 +70,20 @@
                                         {{ rec.youbi_end }}
                                     {% endif %}
                                 </span>
+                                <span class="rec-duration">{{ rec.study_duration }}分</span>
+                                <span class="rec-user">{{ rec.users.name }}</span>
+                                <a href="{{ url_for('main.input_record', id=rec.id) if (username and user_id == rec.user_id) else '#' }}"
+                                {% if not (username and user_id == rec.user_id) %}style="pointer-events: none; color: gray;"{% endif %}>
+                                編集
+                                </a>
+                                <!-- aタグはPOSTに対応できない為、buttonで代用 -->
+                                {% set login = (username and user_id == rec.user_id) %}
+                                <form class="rec-delete" method="POST" action="{{ url_for('main.delete_record', id=rec.id) if login else '#' }}">
+                                    <button type="submit"
+                                    {% if not (username and user_id == rec.user_id) %}style="pointer-events: none; color: gray;"{% endif %}
+                                    onclick="return confirm('削除します')" {% if not login %}disabled{% endif %}>削除</button>
+                                </form>
                             </span>
-                        </div>
-                        <div>
-                            <span class="rec-duration">({{ rec.study_duration }}分)</span>
-                            <span class="rec-user">{{ rec.users.name }}</span>
-                            <a href="{{ url_for('main.input_record', id=rec.id) if (username and user_id == rec.user_id) else '#' }}"
-                            {% if not (username and user_id == rec.user_id) %}style="pointer-events: none; color: gray;"{% endif %}>
-                            編集
-                            </a>
-                            <!-- aタグはPOSTに対応できない為、buttonで代用 -->
-                            {% set login = (username and user_id == rec.user_id) %}
-                            <form class="rec-delete" method="POST" action="{{ url_for('main.delete_record', id=rec.id) if login else '#' }}">
-                                <button type="submit"
-                                {% if not (username and user_id == rec.user_id) %}style="pointer-events: none; color: gray;"{% endif %}
-                                onclick="return confirm('削除します')" {% if not login %}disabled{% endif %}>削除</button>
-                            </form>
                         </div>
                         <div class="rec-category"><h2>{{ rec.categories.category_name }}</h2></div>
                         <div class="rec-confirm">{{ rec.confirm }}</div>
