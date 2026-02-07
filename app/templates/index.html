@@ -44,79 +44,33 @@
 
         <div class="data-main">
             <div class="table-form">
-                {% if legacy %}
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>カテゴリ</th>
-                                <th>開始日時</th>
-                                <th>終了日時</th>
-                                <th>時間(分)</th>
-                                <th>内容</th>
-                                <th>備考・感想</th>
-                                <th>入力者</th>
-                                <th>編集</th>
-                                <th>削除</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% if records %}
-                                {% for rec in records: %}
-                                    <tr>
-                                        <td>{{ rec.categories.category_name }}</td>
-                                        <td>{{ rec.study_date_start }}</td>
-                                        <td>{{ rec.study_date_end }}</td>
-                                        <td>{{ rec.study_duration }}</td>
-                                        <td class="td-text">{{ rec.confirm }}</td>
-                                        <td class="td-text">{{ rec.remark }}</td>
-                                        <td>{{ rec.users.name }}</td>
-                                        <td>
-                                            <a href="{{ url_for('main.input_record', id=rec.id) if (username and user_id == rec.user_id) else '#' }}"
-                                            {% if not (username and user_id == rec.user_id) %}style="pointer-events: none; color: gray;"{% endif %}>
-                                            編集
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <!-- aタグはPOSTに対応できない為、buttonで代用 -->
-                                            {% set login = (username and user_id == rec.user_id) %}
-                                            <form class="link-button" method="POST" action="{{ url_for('main.delete_record', id=rec.id) if login else '#' }}">
-                                                <button type="submit" onclick="return confirm('削除します')" {% if not login %}disabled{% endif %}>削除</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            {% endif %}
-                        </tbody>
-                    </table>
-                {% else %}
-                    {% for rec in records: %}
-                        <div class="rec-row">
-                            <div class="rec-info">
-                                <span class="rec-date">{{ rec.study_date_start }} ~ {{ rec.study_date_end }}</span>
-                            </div>
-                            <div>
-                                <span class="rec-duration">({{ rec.study_duration }}分)</span>
-                                <span class="rec-user">{{ rec.users.name }}</span>
-                                <a href="{{ url_for('main.input_record', id=rec.id) if (username and user_id == rec.user_id) else '#' }}"
-                                {% if not (username and user_id == rec.user_id) %}style="pointer-events: none; color: gray;"{% endif %}>
-                                編集
-                                </a>
-                                <!-- aタグはPOSTに対応できない為、buttonで代用 -->
-                                {% set login = (username and user_id == rec.user_id) %}
-                                <form class="rec-delete" method="POST" action="{{ url_for('main.delete_record', id=rec.id) if login else '#' }}">
-                                    <button type="submit"
-                                    {% if not (username and user_id == rec.user_id) %}style="pointer-events: none; color: gray;"{% endif %}
-                                    onclick="return confirm('削除します')" {% if not login %}disabled{% endif %}>削除</button>
-                                </form>
-                            </div>
-                            <div class="rec-category"><h2>{{ rec.categories.category_name }}</h2></div>
-                            <div class="rec-confirm">{{ rec.confirm }}</div>
-                            {% if rec.remark %}
-                                <div class="rec-remark">備考や感想: <br>{{ rec.remark }}</div>
-                            {% endif %}
+                {% for rec in records: %}
+                    <div class="rec-row">
+                        <div class="rec-info">
+                            <span class="rec-date">{{ rec.study_date_start }} ~ {{ rec.study_date_end }}</span>
                         </div>
-                    {% endfor %}
-                {% endif %}
+                        <div>
+                            <span class="rec-duration">({{ rec.study_duration }}分)</span>
+                            <span class="rec-user">{{ rec.users.name }}</span>
+                            <a href="{{ url_for('main.input_record', id=rec.id) if (username and user_id == rec.user_id) else '#' }}"
+                            {% if not (username and user_id == rec.user_id) %}style="pointer-events: none; color: gray;"{% endif %}>
+                            編集
+                            </a>
+                            <!-- aタグはPOSTに対応できない為、buttonで代用 -->
+                            {% set login = (username and user_id == rec.user_id) %}
+                            <form class="rec-delete" method="POST" action="{{ url_for('main.delete_record', id=rec.id) if login else '#' }}">
+                                <button type="submit"
+                                {% if not (username and user_id == rec.user_id) %}style="pointer-events: none; color: gray;"{% endif %}
+                                onclick="return confirm('削除します')" {% if not login %}disabled{% endif %}>削除</button>
+                            </form>
+                        </div>
+                        <div class="rec-category"><h2>{{ rec.categories.category_name }}</h2></div>
+                        <div class="rec-confirm">{{ rec.confirm }}</div>
+                        {% if rec.remark %}
+                            <div class="rec-remark">備考や感想: <br>{{ rec.remark }}</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
             </div>
 
             <div class="table-duration">
