@@ -22,9 +22,9 @@ class Records(db.Model):
     remark = db.Column(db.Text)
     category_id = db.Column(db.Integer, ForeignKey("categories.category_id"))
 
-    @hybrid_property
-    def study_duration(self):
-        return int((self.study_date_end - self.study_date_start).total_seconds()) // 60
+    # @hybrid_property
+    # def study_duration(self):
+    #     return int((self.study_date_end - self.study_date_start).total_seconds()) // 60
 
 class Users(db.Model, UserMixin):
     __tablename__ = "users"

@@ -67,6 +67,19 @@ def index():
 
         records = db.session.execute(stmt).scalars().all()
 
+    # 日付に曜日を入れる
+    week_days = ["月", "火", "水", "木", "金", "土", "日"]
+    for r in records:
+        r.study_duration = int((r.study_date_end - r.study_date_start).total_seconds()) // 60
+
+        r.study_date_date_start = r.study_date_start.strftime("%Y/%m/%d")
+        r.study_date_date_end = r.study_date_end.strftime("%Y/%m/%d")
+        r.study_date_time_start = r.study_date_start.strftime("%H:%M")
+        r.study_date_time_end = r.study_date_end.strftime("%H:%M")
+
+        r.youbi_start = f"({week_days[r.study_date_start.weekday()]})"
+        r.youbi_end = f"({week_days[r.study_date_end.weekday()]})"
+
     # 時間(分)の合計値
     if records:
         study_duration_sum = sum([i.study_duration for i in records])

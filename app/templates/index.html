@@ -47,7 +47,30 @@
                 {% for rec in records: %}
                     <div class="rec-row">
                         <div class="rec-info">
-                            <span class="rec-date">{{ rec.study_date_start }} ~ {{ rec.study_date_end }}</span>
+                            <span class="rec-date">
+                                {{ rec.study_date_date_start }} {{ rec.study_date_time_start }}
+                                <span style="
+                                    {% if '(土)' in rec.youbi_start %}color: blue;
+                                    {% elif '(日)' in rec.youbi_start %}color: red;
+                                    {% endif %}">
+                                    {% if rec.study_date_date_start != rec.study_date_date_end %}
+                                        {{ rec.youbi_start }}
+                                    {% endif %}
+                                </span>
+                                ~ 
+                                {% if rec.study_date_date_start != rec.study_date_date_end %}
+                                    {{ rec.study_date_date_end }}
+                                {% endif %}
+                                {{ rec.study_date_time_end }}
+                                <span style="
+                                    {% if '(土)' in rec.youbi_end %}color: blue;
+                                    {% elif '(日)' in rec.youbi_end %}color: red;
+                                    {% endif %}">
+                                    {% if rec.study_date_date_start == rec.study_date_date_end %}
+                                        {{ rec.youbi_end }}
+                                    {% endif %}
+                                </span>
+                            </span>
                         </div>
                         <div>
                             <span class="rec-duration">({{ rec.study_duration }}分)</span>
