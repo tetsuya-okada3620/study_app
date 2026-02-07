@@ -117,12 +117,22 @@ table > tbody > tr:hover {
     border-left: 5px solid green;
 }
 .rec-category h2 {
-    font-size: 1.4rem;
+    font-size: 1.55rem;
+}
+
+.rec-confirm-remark {
+    margin-bottom: 10px;
 }
 .rec-confirm {
     white-space: pre-wrap;
-    margin-left: 20px;
+    margin: 10px 0 0 30px;
 }
+.rec-remark {
+    margin: 10px 0 0 30px;
+    color: gray;
+    white-space: pre-wrap;
+}
+
 .rec-delete {
     display: inline;
 }
@@ -131,12 +141,6 @@ table > tbody > tr:hover {
     text-decoration: underline;
     background-color: inherit;
     color: rgb(0, 102, 204);
-}
-
-.rec-remark {
-    margin: 10px 0 0 20px;
-    color: gray;
-    white-space: pre-wrap;
 }
 
 .td-text {
