@@ -21,6 +21,7 @@ class CategoryForm(FlaskForm):
     category_name = StringField("カテゴリ名", validators=[DataRequired(), Length(max=30)])
     submit = SubmitField("送信")
 
+# NOTE: GETの時点でWTFは不要
 class SearchForm(FlaskForm):
     class Meta:
         csrf = False
