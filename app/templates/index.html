@@ -9,6 +9,9 @@
         <div class="search-form">
             <div class="search-wtf">
                 <form method="GET" action="{{ url_for('main.index') }}">
+                    {% if request.args.get("remark") %}
+                        <input type="hidden" name="remark" value="true">
+                    {% endif %}
                     <div class="row-wtf">
                         <div class="col-category">
                             {{ search.category_name.label }}
@@ -87,7 +90,7 @@
                         <div class="rec-category"><h2>{{ rec.categories.category_name }}</h2></div>
                         <div class="rec-confirm-remark">
                             <div class="rec-confirm">{{ rec.confirm }}</div>
-                            {% if rec.remark %}
+                            {% if request.args.get("remark") and rec.remark %}
                                 <div class="rec-remark">備考や感想: <br>{{ rec.remark }}</div>
                             {% endif %}
                         </div>

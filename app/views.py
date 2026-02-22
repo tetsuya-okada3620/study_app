@@ -37,7 +37,7 @@ def index():
     search.category_name.choices = [(str(v.category_id), v.category_name) for v in category_list]
 
     records = None
-    if not request.args:
+    if not request.args or (len(request.args) == 1 and "remark" in request.args):
         # 初期化。とりあえず最新10件(ページネーションは今後の課題)
         search.category_name.data = "-998"
         stmt = select(Records).order_by(Records.study_date_start.desc()).limit(10)
@@ -102,7 +102,8 @@ def index():
         study_minutes = 0
 
     # print(search.errors)
-    return render_template("index.html", records=records, search=search, study_hours=study_hours, study_minutes=study_minutes, fig_html=fig_html)
+    return render_template("index.html", records=records, search=search, study_hours=study_hours, 
+                           study_minutes=study_minutes, fig_html=fig_html)
 
 @main.route("/logout", methods=["POST"])
 @login_required
